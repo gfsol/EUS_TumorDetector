@@ -1,11 +1,9 @@
-# 🧠 Pancreatic Tumor Detection in Endoscopic Ultrasound Images (EUS)
+ 🧠 Pancreatic Tumor Detection in Endoscopic Ultrasound Images (EUS)
 
 A real-time deep learning system for detecting pancreatic tumors in endoscopic ultrasound (EUS) images using [YOLOv11](https://github.com/ultralytics/ultralytics). This project fine-tunes a YOLOv11n model on the IAEUS dataset and supports both static image and live video inference.
 
-<video width="100%" controls>
-  <source src="assets/example_detection.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+🎥 **Demo video:**  
+[Click here to watch the detection demo](https://github.com/gfsol/EUS_TumorDetector/blob/main/assets/example_detection.mp4)
 
 ---
 
@@ -35,9 +33,11 @@ could be applied in routine checkups, screenings, or post-operative follow-up.
 
 ## 🧪 Dataset
 
-- **Source**: IAEUS — publicly available dataset of EUS images.
-- **Size**: 7,825 grayscale images from 606 patients.
-- **Format**: YOLO-compatible bounding box annotations in `.txt` files.
+### IAEUS – Endoscopic Ultrasound Dataset
+
+- **Official dataset website**: https://iaeus.im-lis.com/
+- **Size**: 7,825 grayscale EUS images from 606 patients
+- **Annotations**: Bounding boxes provided by the dataset authors
 - **Classes (7)**:
   - Tumor
   - Difficile
@@ -47,17 +47,32 @@ could be applied in routine checkups, screenings, or post-operative follow-up.
   - To discard
   - Tumor mask
 
-### Directory Structure
+⚠️ **Important note on data usage**  
+Due to licensing and redistribution restrictions, **this repository does NOT include the IAEUS dataset**, neither images nor annotation files.
+
+The dataset was **preprocessed and reorganized** locally to match a YOLO-compatible structure for training and validation. Only the **scripts, configuration files, and folder structure** are provided here to ensure reproducibility.
+
+---
+
+### Dataset Preparation
+
+To reproduce the experiments:
+
+1. Download the dataset from the official source:  
+   👉 https://iaeus.im-lis.com/
+2. Follow the dataset terms of use and citation requirements.
+3. Organize the data locally using the provided structure or preparation scripts.
+
+Example structure used for training:
 
 ```
-TumorDetector/
-├── data.yaml               # Dataset configuration
-├── images/                 # EUS images
+dataset/
+├── images/
 │   ├── train/pos
 │   ├── train/neg
 │   ├── val/pos
 │   └── val/neg
-├── labels/                 # YOLO-format bounding box annotations
+├── labels/
 │   ├── train/pos
 │   ├── train/neg
 │   ├── val/pos
@@ -70,7 +85,8 @@ TumorDetector/
 
 **Python**: 3.11  
 **Virtual Environment**: Created with `venv` or `conda`  
-**Libraries**:
+
+**Main Libraries**:
 - `ultralytics==8.3.227`
 - `torch==2.5.1+cu121`
 - `opencv-python`
@@ -78,16 +94,6 @@ TumorDetector/
 - `matplotlib`
 - `pyyaml`
 - `torchvision`, `torchaudio`
-
-### Activate Environment
-
-```bash
-# Windows PowerShell
-& yolo11_env/Scripts/activate
-
-# or Bash
-source yolo11_env/Scripts/activate
-```
 
 ---
 
@@ -99,16 +105,14 @@ Uses YOLOv11n (lightweight) for speed and efficiency.
 yolo detect train model=yolo11n.pt data=data.yaml imgsz=512 epochs=100 batch=8
 ```
 
-- **Input size**: 512x512
-- **Epochs**: 100
-- **Batch size**: 8
-- **Outputs**:
-  - Trained weights in `runs/detect/<run_name>/weights/`
-  - Training logs, plots, label heatmaps
+**Training configuration**:
+- Input size: 512×512
+- Epochs: 100
+- Batch size: 8
 
-**Sample Output Path**:
+**Outputs**:
 ```
-runs/detect/train17/
+runs/detect/<run_name>/
 ├── weights/
 │   ├── best.pt
 │   └── last.pt
@@ -120,101 +124,67 @@ runs/detect/train17/
 
 ## 📈 Performance (Validation)
 
-On the IAEUS validation set (852 images, 310 tumor instances):
+Validation on the IAEUS validation split (852 images, 310 tumor instances):
 
-| Metric   | Score |
-|----------|-------|
+| Metric    | Score |
+|-----------|-------|
 | Precision | ~0.72 |
 | Recall    | ~0.76 |
 | mAP@0.5   | ~0.76 |
 
-- **High Confidence** (> 0.7): strong detection
-- **Medium** (0.4–0.7): partial detection, shadow, artifact
+Confidence interpretation:
+- **High** (> 0.7): strong detection
+- **Medium** (0.4–0.7): partial tumor or artifact
 - **Low** (< 0.4): likely false positive
 
 ---
 
-## 🔍 Inference (Images & Video)
+## 🔍 Inference
 
-Run inference on static images, video files, or live webcam.
-
-### Example: Image
-
-```python
-from ultralytics import YOLO
-
-model = YOLO("runs/detect/train17/weights/best.pt")
-results = model("test_image.jpg")
-results.show()
-```
-
-### Example: Video / Webcam
-
-```python
-import cv2
-from ultralytics import YOLO
-
-model = YOLO("runs/detect/train17/weights/best.pt")
-cap = cv2.VideoCapture(0)  # Or path to video file
-
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        break
-
-    results = model.predict(frame, imgsz=512, conf=0.25)
-    annotated = results[0].plot()
-
-    cv2.imshow("Tumor Detection", annotated)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-cap.release()
-cv2.destroyAllWindows()
-```
+Once trained, the model can be used to analyze static images or video sequences. The predictions include bounding boxes and confidence scores over tumor regions.
 
 ---
 
 ## 🧪 Evaluation Without Bounding Boxes
 
-If your test images do **not** include bounding boxes:
-- Use model predictions and analyze **confidence scores**
-- A detection is considered “positive” if any prediction exceeds a confidence threshold (e.g., 0.5)
-- Useful for evaluating datasets with image-level labels only
+For datasets with image-level labels only:
+- A frame is considered positive if **any detection exceeds a confidence threshold**
+- Useful for weakly supervised or external validation datasets
 
 ---
 
 ## 🧠 Notes
 
-- Model generalizes well on grayscale EUS images; may underperform on colored or heavily artifacted data.
-- Inference is fast and lightweight with YOLOv11n, suitable for real-time applications.
-- Modular structure: separate scripts for training (`train.py`), inference (`detector.py`), and evaluation.
+- Optimized for grayscale EUS images
+- Lightweight and suitable for near real-time inference
+- Modular codebase (training, inference, preprocessing separated)
 
 ---
 
 ## 🧩 Future Improvements
 
-- Add temporal smoothing for video inference
-- Improve class-wise performance (especially for similar categories)
-- Implement Grad-CAM or explainability techniques
-- Integrate test-time augmentation (TTA)
+- Temporal smoothing for video predictions
+- Extension to CT imaging
+- Explainability methods (Grad-CAM)
+- Test-time augmentation (TTA)
 
 ---
 
-## 📚 Citation & Dataset
+## 📚 Citation
 
-If you use the IAEUS dataset, please cite the original paper:
-> [Insert dataset citation and link here]
+Please cite the **IAEUS dataset authors** when using this work.  
+Dataset website: https://iaeus.im-lis.com/
 
 ---
 
 ## 📎 License
 
-This project is for **research and educational purposes** only. Not intended for clinical use.
+This project is released under the **MIT License**.  
+See the `LICENSE` file for details.
 
 ---
 
 ## 🙌 Acknowledgements
 
-- [Ultralytics](https://github.com/ultralytics/ultralytics) for the YOLOv8 framework
-- Public IAEUS dataset contributors
+- [Ultralytics](https://github.com/ultralytics/ultralytics)
+- IAEUS dataset contributors
