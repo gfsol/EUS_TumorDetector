@@ -1,4 +1,4 @@
- 🧠 Pancreatic Tumor Detection in Endoscopic Ultrasound Images (EUS)
+# 🧠 Pancreatic Tumor Detection in Endoscopic Ultrasound Images (EUS)
 
 A real-time deep learning system for detecting pancreatic tumors in endoscopic ultrasound (EUS) images using [YOLOv11](https://github.com/ultralytics/ultralytics). This project fine-tunes a YOLOv11n model on the IAEUS dataset and supports both static image and live video inference.
 
