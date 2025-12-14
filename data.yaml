@@ -1,0 +1,18 @@
+# YOLO dataset configuration
+train:
+  - dataset/images/train/pos
+  - dataset/images/train/neg
+
+val:
+  - dataset/images/val/pos
+  - dataset/images/val/neg
+
+nc: 7
+names:
+  - Tumor
+  - Difficile
+  - Adenocarcinome
+  - Tumeur endocrine
+  - hors pancreas
+  - to discard
+  - Tumor mask
