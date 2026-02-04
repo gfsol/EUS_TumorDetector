@@ -1,4 +1,4 @@
-# 🧠 Pancreatic Tumor Detection in Endoscopic Ultrasound Images (EUS)
+#  Pancreatic Tumor Detection in Endoscopic Ultrasound Images (EUS)
 
 A real-time deep learning system for detecting pancreatic tumors in endoscopic ultrasound (EUS) images using [YOLOv11](https://github.com/ultralytics/ultralytics). This project fine-tunes a YOLOv11n model on the IAEUS dataset and supports both static image and live video inference.
 
@@ -7,7 +7,7 @@ A real-time deep learning system for detecting pancreatic tumors in endoscopic u
 
 ---
 
-## 🫀 Motivation
+##  Motivation
 
 Early detection of pancreatic tumors is critical — yet extremely challenging.  
 Pancreatic cancer has one of the highest mortality rates due to late diagnosis.  
@@ -22,7 +22,7 @@ could be applied in routine checkups, screenings, or post-operative follow-up.
 
 ---
 
-## 📌 Project Overview
+##  Project Overview
 
 - **Goal**: Automatically identify tumor regions in grayscale endoscopic ultrasound images, in real-time or static mode.
 - **Dataset**: Public IAEUS dataset — 7,825 annotated EUS images from 606 patients.
@@ -31,7 +31,7 @@ could be applied in routine checkups, screenings, or post-operative follow-up.
 
 ---
 
-## 🧪 Dataset
+##  Dataset
 
 ### IAEUS – Endoscopic Ultrasound Dataset
 
@@ -81,7 +81,7 @@ dataset/
 
 ---
 
-## ⚙️ Setup & Environment
+##  Setup & Environment
 
 **Python**: 3.11  
 **Virtual Environment**: Created with `venv` or `conda`  
@@ -97,7 +97,7 @@ dataset/
 
 ---
 
-## 🏋️‍♂️ Model Training
+##  Model Training
 
 Uses YOLOv11n (lightweight) for speed and efficiency.
 
@@ -122,7 +122,7 @@ runs/detect/<run_name>/
 
 ---
 
-## 📈 Performance (Validation)
+##  Performance (Validation)
 
 Validation on the IAEUS validation split (852 images, 310 tumor instances):
 
@@ -139,13 +139,13 @@ Confidence interpretation:
 
 ---
 
-## 🔍 Inference
+##  Inference
 
 Once trained, the model can be used to analyze static images or video sequences. The predictions include bounding boxes and confidence scores over tumor regions.
 
 ---
 
-## 🧪 Evaluation Without Bounding Boxes
+##  Evaluation Without Bounding Boxes
 
 For datasets with image-level labels only:
 - A frame is considered positive if **any detection exceeds a confidence threshold**
@@ -153,7 +153,7 @@ For datasets with image-level labels only:
 
 ---
 
-## 🧠 Notes
+##  Notes
 
 - Optimized for grayscale EUS images
 - Lightweight and suitable for near real-time inference
@@ -161,7 +161,7 @@ For datasets with image-level labels only:
 
 ---
 
-## 🧩 Future Improvements
+##  Future Improvements
 
 - Temporal smoothing for video predictions
 - Extension to CT imaging
@@ -170,21 +170,21 @@ For datasets with image-level labels only:
 
 ---
 
-## 📚 Citation
+##  Citation
 
 Please cite the **IAEUS dataset authors** when using this work.  
 Dataset website: https://iaeus.im-lis.com/
 
 ---
 
-## 📎 License
+##  License
 
 This project is released under the **MIT License**.  
 See the `LICENSE` file for details.
 
 ---
 
-## 🙌 Acknowledgements
+##  Acknowledgements
 
 - [Ultralytics](https://github.com/ultralytics/ultralytics)
 - IAEUS dataset contributors
