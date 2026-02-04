@@ -2,7 +2,7 @@
 
 A real-time deep learning system for detecting pancreatic tumors in endoscopic ultrasound (EUS) images using [YOLOv11](https://github.com/ultralytics/ultralytics). This project fine-tunes a YOLOv11n model on the IAEUS dataset and supports both static image and live video inference.
 
-🎥 **Demo video:**  
+ **Demo video:**  
 [Click here to watch the detection demo](https://github.com/gfsol/EUS_TumorDetector/blob/main/assets/example_detection.mp4)
 
 ---
